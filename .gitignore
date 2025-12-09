@@ -4,3 +4,4 @@
 mosquitto/data
 nodered/flows_cred.json
 nodered/node_modules/
+nodered/capteur_data.jsonl

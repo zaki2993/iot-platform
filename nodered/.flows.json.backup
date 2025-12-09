@@ -8,14 +8,6 @@
         "env": []
     },
     {
-        "id": "8936c7d8a71e6816",
-        "type": "tab",
-        "label": "Flow 2",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "a87fb74a8c6cc59a",
         "type": "mqtt-broker",
         "name": "",

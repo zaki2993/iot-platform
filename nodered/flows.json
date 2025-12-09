@@ -239,7 +239,8 @@
         "wires": [
             [
                 "810e43fc11a88937",
-                "ebb666dfe0724c90"
+                "ebb666dfe0724c90",
+                "f0edf31b5238f403"
             ]
         ]
     },
@@ -351,5 +352,42 @@
         "x": 570,
         "y": 240,
         "wires": []
+    },
+    {
+        "id": "f0edf31b5238f403",
+        "type": "function",
+        "z": "6ce586ae68324cf4",
+        "name": "Foramt Jason",
+        "func": "// Convertir en JSON et ajouter un saut de ligne\nmsg.payload = JSON.stringify(msg.payload) + '\\n';\nreturn msg;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 520,
+        "wires": [
+            [
+                "ccc81d4f804fdc68"
+            ]
+        ]
+    },
+    {
+        "id": "ccc81d4f804fdc68",
+        "type": "file",
+        "z": "6ce586ae68324cf4",
+        "name": "",
+        "filename": "/data/capteur_data.jsonl",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 610,
+        "y": 520,
+        "wires": [
+            []
+        ]
     }
 ]
