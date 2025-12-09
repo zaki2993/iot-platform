@@ -199,7 +199,7 @@
         "type": "function",
         "z": "6ce586ae68324cf4",
         "name": "data generation",
-        "func": "const now = new Date();\nmsg.payload = {\n    device_id: \"capteur-salle-tp-01\",\n    timestamp: now.toISOString(),\n    timestamp_unix: Math.floor(now.getTime() / 1000),\n    temperature: parseFloat((Math.random() * 10 + 18).toFixed(2)),\n    humidity: parseFloat((Math.random() * 40 + 40).toFixed(2)),\n    location: \"Salle TP Informatique\",\n    battery_level: parseFloat((Math.random() * 20 + 80).toFixed(1))\n};\nreturn msg;",
+        "func": "const now = new Date();\nmsg.payload = {\n    device_id: \"capteur-salle-tp-01\",\n    timestamp: now.toISOString(),\n    timestamp_unix: Math.floor(now.getTime() / 1000),\n    temperature: parseFloat((Math.random() * 10 + 20).toFixed(2)), // New testing range: 10°C to 20°C\n    humidity: parseFloat((Math.random() * 40 + 40).toFixed(2)),\n    location: \"Salle TP Informatique\",\n    battery_level: parseFloat((Math.random() * 20 + 80).toFixed(1))\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -246,13 +246,14 @@
         "rh": 0,
         "inputs": 0,
         "x": 110,
-        "y": 300,
+        "y": 260,
         "wires": [
             [
                 "810e43fc11a88937",
                 "ebb666dfe0724c90",
                 "f0edf31b5238f403",
-                "b68ee39edd707807"
+                "b68ee39edd707807",
+                "9b38a13960e261b1"
             ]
         ]
     },
@@ -298,7 +299,7 @@
         "type": "ui_chart",
         "z": "6ce586ae68324cf4",
         "name": "",
-        "group": "487e37f27961648f",
+        "group": "471d4fb32ceb854f",
         "order": 0,
         "width": 0,
         "height": 0,
@@ -331,8 +332,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 570,
-        "y": 160,
+        "x": 750,
+        "y": 440,
         "wires": [
             []
         ]
@@ -361,8 +362,8 @@
         "seg2": "67",
         "diff": false,
         "className": "",
-        "x": 570,
-        "y": 240,
+        "x": 750,
+        "y": 360,
         "wires": []
     },
     {
@@ -510,7 +511,7 @@
         "type": "ui_gauge",
         "z": "6ce586ae68324cf4",
         "name": "",
-        "group": "471d4fb32ceb854f",
+        "group": "487e37f27961648f",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -518,19 +519,19 @@
         "title": "gauge",
         "label": "C°",
         "format": "{{value}}",
-        "min": "15",
-        "max": "35",
+        "min": "-30",
+        "max": "15",
         "colors": [
-            "#000cb3",
-            "#00e639",
-            "#ca3838"
+            "#002db3",
+            "#00e6cb",
+            "#bacb3a"
         ],
-        "seg1": "22",
-        "seg2": "26",
+        "seg1": "-12",
+        "seg2": "0",
         "diff": false,
         "className": "",
         "x": 610,
-        "y": 360,
+        "y": 140,
         "wires": []
     },
     {
@@ -538,7 +539,7 @@
         "type": "ui_chart",
         "z": "6ce586ae68324cf4",
         "name": "",
-        "group": "471d4fb32ceb854f",
+        "group": "487e37f27961648f",
         "order": 0,
         "width": 0,
         "height": 0,
@@ -582,7 +583,7 @@
         "type": "function",
         "z": "6ce586ae68324cf4",
         "name": "Extract Tempeture",
-        "func": "msg.payload = msg.payload.temperature;\nmsg.topic = \"Tempeture (C°)\";;\nreturn msg;",
+        "func": "msg.payload = msg.payload.temperature;\nmsg.topic = \"Tempeture (C°)\";\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -595,6 +596,79 @@
             [
                 "e3e244ca3f1937ef",
                 "42f7e8bc1ebb44b6"
+            ]
+        ]
+    },
+    {
+        "id": "9b38a13960e261b1",
+        "type": "switch",
+        "z": "6ce586ae68324cf4",
+        "name": "",
+        "property": "payload.temeture",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "18",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 260,
+        "wires": [
+            [
+                "f8f513cfe3e5907d"
+            ],
+            [
+                "b18d28dc45dde32a"
+            ]
+        ]
+    },
+    {
+        "id": "b18d28dc45dde32a",
+        "type": "ui_toast",
+        "z": "6ce586ae68324cf4",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1030,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f8f513cfe3e5907d",
+        "type": "ui_template",
+        "z": "6ce586ae68324cf4",
+        "group": "487e37f27961648f",
+        "name": "cold alert",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<p style=\"color:blue;\">Alerte : Température basse ({{msg.payload.temperature}}°C)</p>",
+        "storeOutMessages": true,
+        "fwdInMessages": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 840,
+        "y": 140,
+        "wires": [
+            [
+                "b18d28dc45dde32a"
             ]
         ]
     }
