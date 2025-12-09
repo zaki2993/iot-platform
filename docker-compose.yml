@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  # === Service Mosquitto (Broker MQTT) ===
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883" # Port MQTT
+      - "9001:9001" # Port WebSocket
+    volumes:
+      # Monter les dossiers locaux dans le conteneur
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    networks:
+      - iot-network
+
+  # === Service Node-RED ===
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: unless-stopped
+    ports:
+      - "1880:1880" # Interface web Node-RED
+    volumes:
+      # Persister les flows et donnees
+      - ./nodered:/data
+    environment:
+      # Configurer le fuseau horaire
+      - TZ=Europe/Paris
+    networks:
+      - iot-network
+    depends_on:
+      # Demarrer apres Mosquitto
+      - mosquitto
+
+# === Reseau Docker ===
+networks:
+  iot-network:
+    driver: bridge
